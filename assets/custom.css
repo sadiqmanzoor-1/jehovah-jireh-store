@@ -510,7 +510,15 @@ button.shopify-payment-button__button--unbranded {
 .card:focus-within .card__inner {
   outline-color: var(--jj-accent);
 }
-.card__media {
+/* `.card.card--standard .card__inner .card__media` (four classes, 0,4,0)
+   outranks component-card.css's own `.card .card__inner .card__media`
+   (0,3,0, which sets border-radius via a calc() off --border-radius) —
+   same load-order reasoning as the .card__inner rule above. Both sides
+   happen to net 0 today (--jj-radius: 0; Dawn's calc also nets 0rem given
+   card_corner_radius/card_border_thickness are 0), so an unscoped
+   `.card__media` rule looked correct but was actually losing the cascade
+   — fixed to win on specificity regardless of that coincidence. */
+.card.card--standard .card__inner .card__media {
   border-radius: var(--jj-radius);
 }
 .card__heading,
@@ -622,7 +630,16 @@ button.shopify-payment-button__button--unbranded {
   text-transform: uppercase;
   color: var(--jj-text);
 }
-.mobile-facets__inner {
+/* `.mobile-facets__wrapper .mobile-facets__inner` (two classes, 0,2,0)
+   outranks component-facets.css's own `.mobile-facets__inner{background-
+   color: rgb(var(--color-background))}` (0,1,0) — plain `.mobile-facets
+   __inner` alone would be a same-specificity selector-text TIE, and ties
+   go to the later (Dawn) stylesheet per this file's load-order gotcha, so
+   an unscoped rule here was actually inert, riding on scheme-1's
+   `--color-background` coincidentally already equaling --jj-bg.
+   `<menu-drawer class="mobile-facets__wrapper ...">` (snippets/facets.liquid)
+   is the drawer's own ancestor, giving a real, non-coincidental win. */
+.mobile-facets__wrapper .mobile-facets__inner {
   background-color: var(--jj-bg);
 }
 .mobile-facets__label {
