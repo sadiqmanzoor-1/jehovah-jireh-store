@@ -369,45 +369,23 @@ button.shopify-payment-button__button--unbranded {
   }
 }
 
-/* ---- new arrivals (featured-collection, homepage instance only) ----
-   featured-collection.liquid <link>-injects component-card.css inside its
-   own output, which lands in <body> — after custom.css's <head> <link> —
-   so an unscoped `.card` rule would lose ties to Dawn's own card rules
-   (e.g. `.card--standard .card__inner { border: ... }`, specificity 0,2,0).
-   Confirmed against the dev server's served HTML that Shopify renders JSON
-   template sections as `<section id="shopify-section-template--{template
-   id}__{key}" class="shopify-section ...">` — the numeric template id is
-   assigned per theme deploy and isn't something to hard-code, so this uses
-   an attribute "ends with" selector on the stable part (the "new_arrivals"
-   key from templates/index.json) instead of a literal #id. Chaining
-   `.shopify-section[id$="__new_arrivals"]` with the target class reaches
-   0,3,0 specificity, beating component-card.css's 0,2,0 rule outright
-   (no source-order tie-break needed), while keeping the override confined
-   to this one homepage section instead of leaking into collection/product
-   pages (those get their own pass in custom.css sections 5–6). */
-.shopify-section[id$='__new_arrivals'] .card,
-.shopify-section[id$='__new_arrivals'] .card__inner {
-  background: var(--jj-surface);
-  border-color: color-mix(in srgb, var(--jj-text) 12%, var(--jj-bg));
-  border-radius: var(--jj-radius);
-}
-.shopify-section[id$='__new_arrivals'] .card__heading,
-.shopify-section[id$='__new_arrivals'] .card__heading a {
-  font-family: var(--jj-font-body);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--jj-text);
-}
-.shopify-section[id$='__new_arrivals'] .card:hover .card__heading a,
-.shopify-section[id$='__new_arrivals'] .card:focus-within .card__heading a {
-  color: var(--jj-accent);
-}
-.shopify-section[id$='__new_arrivals'] .price,
-.shopify-section[id$='__new_arrivals'] .price .price-item {
-  color: var(--jj-muted);
-  font-weight: 700;
-}
+/* ---- new arrivals (featured-collection, homepage instance) ----
+   Task 5 originally scoped a `.shopify-section[id$='__new_arrivals']`
+   card/heading/price pass here (id-suffix-attribute selector, since JSON
+   template section ids are namespaced with a per-deploy numeric template
+   id — see git history for the full rationale if that trick is needed
+   again for something actually homepage-specific).
+   Task 6 made `.card` / `.card__heading` / `.price` GLOBAL in section 5
+   below, per this store's one shared `card_style: "standard"` setting —
+   the homepage's featured-collection strip renders the exact same Dawn
+   card markup as the collection grid and Task 7's related-products rail,
+   so it now inherits section 5's rules automatically. Nothing about this
+   homepage instance's card presentation is actually distinct (same
+   columns, same card component, no unique badge/tag markup), so the
+   scoped duplicate was removed rather than kept in slimmed form — a truly
+   homepage-only card tweak should still scope with the same
+   `.shopify-section[id$='__new_arrivals']` pattern shown in git history,
+   layered after section 5's rules with matching or higher specificity. */
 
 /* ---- lookbook ----
    Restructured from the brief's single "lookbook page-width" div into an
@@ -493,4 +471,167 @@ button.shopify-payment-button__button--unbranded {
    body-injected component-newsletter.css and does need the boost). */
 .newsletter__wrapper {
   background: var(--jj-surface);
+}
+
+/* 5. Collection */
+
+/* ---- product cards (GLOBAL — shared with the homepage featured-
+   collection strip and Task 7's related-products rail, per this task's
+   interface contract) ----
+   `sections/main-collection-product-grid.liquid` <link>-injects
+   component-card.css / component-price.css / component-facets.css inside
+   its own section markup, which lands in <body> — after custom.css's
+   <head> <link> — same load-order gotcha as sections 3-4. This store's
+   `card_style` setting is "standard" (config/settings_data.json), so the
+   visible border/radius on a card comes from component-card.css's
+   `.card--card, .card--standard .card__inner` rule (specificity 0,2,0).
+   Outranked below with `.card.card--standard .card__inner` (0,3,0, three
+   classes) so it wins regardless of source order — ties would otherwise
+   go to the later (Dawn) stylesheet, not this equal-specificity one.
+   Direction v3 only: the accent-heading-on-hover treatment is applied
+   (no v1 image-zoom, no v2 hover-swap-to-surface-bg — this card's resting
+   background is already surface-toned per the mockup's own `.product`
+   rule, which is unconditional, not hover-triggered). The 2px
+   transparent-to-accent outline flip on hover/focus-within is the
+   mockup's own explicit "brutalist outline" card language (its `.product
+   :hover, .product:focus-within { outline-color: var(--jj-accent) }`
+   rule), not one of the three mutually-exclusive per-direction hover
+   options, so it's included as part of the "bolder card language". */
+.card.card--standard .card__inner {
+  background: var(--jj-surface);
+  border: 1px solid color-mix(in srgb, var(--jj-text) 12%, var(--jj-bg));
+  border-radius: var(--jj-radius);
+  color: var(--jj-text);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.15s ease;
+}
+.card:hover .card__inner,
+.card:focus-within .card__inner {
+  outline-color: var(--jj-accent);
+}
+.card__media {
+  border-radius: var(--jj-radius);
+}
+.card__heading,
+.card__heading a {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+}
+/* v3 hover treatment: accent-color heading on hover/focus (the brief's
+   one required per-direction option). */
+.card:hover .card__heading a,
+.card:focus-within .card__heading a {
+  color: var(--jj-accent);
+}
+/* `.card .card-information > .price` (three classes, 0,3,0) outranks
+   component-card.css's own `.card-information > .price` (0,2,0) — same
+   load-order reasoning as above. */
+.card .card-information > .price,
+.card .card-information > .price .price-item {
+  color: var(--jj-muted);
+  font-weight: 700;
+}
+.card:hover .card-information > .price,
+.card:focus-within .card-information > .price {
+  color: var(--jj-text);
+}
+
+/* ---- filters (vertical layout — templates/collection.json sets
+   `filter_type: "vertical"`, so Dawn renders snippets/facets.liquid's
+   `.facets__disclosure-vertical` / `.facets__list--vertical` /
+   `.facet-checkbox` branch, plus a separate `.facets-vertical-sort`
+   form for the sort-by control). component-facets.css is <link>-injected
+   inside this same section's body markup (same load-order gotcha), so
+   selectors below add an extra ancestor class wherever Dawn sets the
+   same property, to win regardless of source order. `.facets__heading`
+   is a real `<h2>`, so it already inherits Archivo Black from section 2's
+   unscoped `h1..h6` rule — only case/color/spacing need setting here. */
+.facets-vertical .facets__heading,
+.facets-vertical .facets__heading--vertical {
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--jj-accent);
+}
+.facets-vertical .facets__disclosure-vertical {
+  border-top-color: color-mix(in srgb, var(--jj-text) 12%, var(--jj-bg));
+}
+.facets-vertical .facets__summary {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+}
+.facets-vertical .facets__disclosure-vertical[open] .facets__summary,
+.facets-vertical .facets__summary:hover {
+  color: var(--jj-accent);
+}
+.facets-vertical .facet-checkbox {
+  font-family: var(--jj-font-body);
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+.facets-vertical .facets__label:hover,
+.facets-vertical .facets__label.active {
+  color: var(--jj-accent);
+}
+.facets-vertical-sort .facet-filters__sort,
+.facets-vertical-sort .select__select {
+  background: transparent;
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+}
+.facets-vertical .active-facets__button-inner {
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+  box-shadow: none;
+  border-radius: var(--jj-radius);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.facets-vertical-sort .product-count-vertical .product-count__text {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+/* mobile drawer trigger (< 750px — the vertical aside hides below Dawn's
+   own 750px breakpoint, so this is the only filter entry point at the
+   375px width this task verifies). */
+.mobile-facets__open-label,
+.mobile-facets__heading {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+}
+.mobile-facets__inner {
+  background-color: var(--jj-bg);
+}
+.mobile-facets__label {
+  color: var(--jj-muted);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.mobile-facets__label:hover,
+.mobile-facets__label.active {
+  color: var(--jj-accent);
 }
