@@ -652,3 +652,162 @@ button.shopify-payment-button__button--unbranded {
 .mobile-facets__label.active {
   color: var(--jj-accent);
 }
+
+/* 6. Product */
+
+/* ---- gallery / media ----
+   sections/main-product.liquid <link>-injects section-main-product.css
+   inside <product-info> (in <body>), after custom.css's <head> <link> —
+   same load-order gotcha as sections 3-5. Each media item's own wrapper
+   div (snippets/product-thumbnail.liquid) carries Dawn's real
+   `.global-media-settings` class, which sets `border-radius: var(--media-
+   radius)` (0,1,0) and, on its own `img` descendant, `border-radius: calc(
+   var(--media-radius) - var(--media-border-width))` (0,1,1). `media_radius`
+   is already 0 (config/settings_data.json), matching --jj-radius, so an
+   unscoped `.global-media-settings{border-radius}` rule would *look*
+   correct today while actually losing the specificity tie to the later
+   (Dawn) stylesheet — the same coincidence class as Task 6's `.card__media`
+   finding. Fixed with the wrapper's OTHER real class present on the same
+   element (`.product-media-container`, same snippet) for an outright win
+   (0,2,0 / 0,2,1) independent of that coincidence. */
+.product-media-container.global-media-settings,
+.product-media-container.global-media-settings img {
+  border-radius: var(--jj-radius);
+}
+
+/* ---- title ----
+   No Dawn rule sets text-transform on .product__title/h1 (checked section-
+   main-product.css and base.css's h1..h6 rule) — free win, plain
+   descendant selector. Font-family/color already come from section 2's
+   global h1..h6 rule. */
+.product__title h1 {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* ---- price ----
+   component-price.css is <link>-injected inside <product-info> (in
+   <body>), after custom.css. Its own `.price--large{font-size}` is 0,1,0 —
+   an unscoped `.price--large` rule here would be a same-specificity TIE,
+   which Dawn wins (later stylesheet), exactly the mistake Task 6's fix
+   round caught for `.mobile-facets__inner`. `.product` (the real outer
+   wrapper div, sections/main-product.liquid) is a genuine ancestor, added
+   here for an outright 0,2,0 win. Dawn's `.price{color: rgb(var(--color-
+   foreground))}` already resolves to --jj-text for scheme-1 (config/
+   settings_data.json), so no color override is needed — only weight/
+   tracking, properties Dawn's price CSS never sets on this selector
+   (no fight on those two even before the ancestor boost). */
+.product .price--large {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ---- variant pills (picker_type: "button" in templates/product.json's
+   existing variant_picker block settings → Dawn renders snippets/product-
+   variant-picker.liquid's `.product-form__input--pill` branch) ----
+   component-product-variant-picker.css is <link>-injected inside
+   <product-info> (in <body>), after custom.css. Dawn's own resting-state
+   selector `.product-form__input--pill input[type='radio'] + label` is
+   (0,2,2) — one class + one attribute selector in B, two elements in C.
+   Matching that selector text verbatim would be a same-specificity TIE
+   that Dawn wins (later stylesheet) — the exact mistake flagged above.
+   Fixed by chaining the fieldset's OTHER real class, `.product-form__input`
+   (present on the same element per product-variant-picker.liquid's
+   `<fieldset class="js product-form__input product-form__input--pill">`),
+   for a genuine (0,3,2) win. Same technique on :hover and :checked, whose
+   Dawn selectors are (0,3,2) and (0,3,2) respectively — chained here to
+   (0,4,2), both outright wins. Selection is shown as an accent-colored
+   border (not a filled background), matching this project's established
+   "brutalist outline" language (section 5's card hover, same idea) rather
+   than Dawn's default invert-to-foreground fill. */
+.product-form__input.product-form__input--pill input[type='radio'] + label {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--jj-text) 30%, var(--jj-bg));
+  border-radius: var(--jj-radius);
+  color: var(--jj-text);
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.product-form__input.product-form__input--pill input[type='radio'] + label:hover {
+  border-color: var(--jj-accent);
+}
+.product-form__input.product-form__input--pill input[type='radio']:checked + label {
+  background: transparent;
+  border-color: var(--jj-accent);
+  color: var(--jj-accent);
+}
+/* `.form__label` (the option name, e.g. "Size") is a real `<legend>` inside
+   the same fieldset. base.css's own `.form__label{letter-spacing}` is
+   0,1,0; `.product-form__input .form__label` (two real classes: the
+   fieldset + its descendant) is 0,2,0 — an outright win on specificity
+   alone, no source-order dependency either way. */
+.product-form__input .form__label {
+  color: var(--jj-muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- quantity input ----
+   .quantity/.quantity__input/.quantity__button live in base.css, which
+   loads in <head> BEFORE custom.css (layout/theme.liquid line ~281-282) —
+   so plain, unscoped selectors here already win any same-specificity tie
+   by source order alone, no ancestor boost needed (same reasoning as
+   section 4's .newsletter__wrapper note). `inputs_radius` is already 0
+   (config/settings_data.json), matching --jj-radius; set explicitly below
+   anyway per this project's "no coincidental wins" convention. */
+.quantity,
+.quantity:after {
+  border-radius: var(--jj-radius);
+}
+.quantity__input {
+  color: var(--jj-text);
+}
+.quantity__button {
+  color: var(--jj-muted);
+}
+.quantity__button:hover,
+.quantity__button:focus-visible {
+  color: var(--jj-accent);
+}
+
+/* ---- add-to-cart ----
+   `.product-form__submit` carries Dawn's `.button` class, which already
+   gets an accent background from section 2's global `.button{background:
+   var(--jj-accent)}` rule (0,1,0, ties base.css's own `.button{background-
+   color}` at 0,1,0 — custom.css loads after base.css, so it already wins
+   that tie without help) — not duplicated here. `.button--full-width`
+   (Dawn's own class, already on this button) supplies the full-width
+   layout. Real bug found and fixed here: buy_buttons.show_dynamic_checkout
+   is true (templates/product.json), so buy-buttons.liquid always renders
+   this button with Dawn's `.button--secondary` class, which reassigns the
+   `--color-button-text` custom prop to `--color-secondary-button-text`
+   (scheme-1: #F2F2F2, light — config/settings_data.json) — combined with
+   the accent BACKGROUND above, that leaves light text on a lime button,
+   failing contrast. `.product-form__submit{color}` (0,1,0) ties base.css's
+   `.button{color: rgb(var(--color-button-text))}` (0,1,0) — base.css loads
+   first, so this tie already resolves to custom.css by source order (a
+   real win, not a coincidence), forcing dark text back regardless of which
+   button--primary/secondary variant renders. */
+.product-form__submit {
+  color: var(--jj-bg);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- related products heading ----
+   section-related-products.css (<link>-injected inside sections/related-
+   products.liquid, in <body>) only sets `margin` on .related-products__
+   heading — no text-transform/letter-spacing fight, free win. Color/font-
+   family already come from section 2's global h1..h6 rule + base.css's
+   own h1..h6 rule (both resolve to --jj-text for scheme-1 already), so
+   not duplicated here — this is the shared `.related-products__heading`
+   class, distinct from section 5's `.card`/`.price` rules per the
+   interface contract (this selector never matches a card). */
+.related-products__heading {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
