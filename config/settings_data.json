@@ -6,12 +6,12 @@
       "color_schemes": {
         "scheme-1": {
           "settings": {
-            "background": "#FFFFFF",
+            "background": "#0E0E0E",
             "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#121212",
+            "text": "#F2F2F2",
+            "button": "#D8FF3E",
+            "button_label": "#0E0E0E",
+            "secondary_button_label": "#F2F2F2",
             "shadow": "#121212"
           }
         },
@@ -60,9 +60,9 @@
           }
         }
       },
-      "type_header_font": "assistant_n4",
+      "type_header_font": "archivo_black_n4",
       "heading_scale": 100,
-      "type_body_font": "assistant_n4",
+      "type_body_font": "space_grotesk_n4",
       "body_scale": 100,
       "page_width": 1200,
       "spacing_sections": 0,

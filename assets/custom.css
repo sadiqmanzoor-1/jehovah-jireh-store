@@ -1,0 +1,33 @@
+/* ============================================================
+   Jehovah Jireh — all custom overrides. Dawn files stay stock.
+   Sections: 1 tokens · 2 global · 3 header/footer · 4 homepage
+             5 collection · 6 product · 7 cart drawer
+   ============================================================ */
+
+/* 1. Tokens */
+:root {
+  --jj-bg: #0E0E0E;
+  --jj-surface: #1A1A1A;
+  --jj-text: #F2F2F2;
+  --jj-muted: #9A9A9A;
+  --jj-accent: #D8FF3E;
+  --jj-font-heading: 'Archivo Black', Impact, sans-serif;
+  --jj-font-body: 'Space Grotesk', -apple-system, Helvetica, Arial, sans-serif;
+  --jj-radius: 0;
+}
+
+/* 2. Global */
+body {
+  background: var(--jj-bg);
+  color: var(--jj-text);
+  font-family: var(--jj-font-body);
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--jj-font-heading);
+}
+.button,
+.shopify-challenge__button,
+button.shopify-payment-button__button--unbranded {
+  background: var(--jj-accent);
+  border-radius: var(--jj-radius);
+}
