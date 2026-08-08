@@ -175,3 +175,322 @@ button.shopify-payment-button__button--unbranded {
 .footer__copyright a:hover {
   color: var(--jj-accent);
 }
+
+/* 4. Homepage */
+
+/* ---- custom-hero ----
+   Both new sections (custom-hero, lookbook) have no Dawn stylesheet
+   competing for their own classes, so plain single-class selectors are
+   enough there. The one exception below is the "new arrivals" product
+   grid, which reuses Dawn's shared card-product component — see the note
+   above that block for why it needs the id-scoping/specificity approach. */
+.custom-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 2px solid var(--jj-text);
+  min-height: 70vh;
+}
+.custom-hero--full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+.custom-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.custom-hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Token-derived placeholder slab shown until a real campaign image is
+   uploaded — colors are all color-mix()'d from the five --jj-* tokens
+   rather than new hard-coded hex values. */
+.custom-hero__placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--jj-bg) 55%, transparent) 0 2px,
+      transparent 2px 6px
+    ),
+    conic-gradient(
+      from 210deg at 68% 38%,
+      var(--jj-surface) 0deg,
+      color-mix(in srgb, var(--jj-surface) 35%, var(--jj-text) 65%) 70deg,
+      var(--jj-accent) 92deg,
+      color-mix(in srgb, var(--jj-bg) 85%, var(--jj-accent) 15%) 96deg,
+      var(--jj-surface) 150deg,
+      color-mix(in srgb, var(--jj-surface) 65%, var(--jj-bg) 35%) 230deg,
+      var(--jj-bg) 360deg
+    );
+}
+.custom-hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--jj-bg) 0%, transparent 34%),
+    linear-gradient(0deg, var(--jj-bg) 4%, transparent 42%);
+  pointer-events: none;
+}
+.custom-hero__meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+  padding: 1.5rem clamp(1rem, 3.5vw, 3rem) 0;
+}
+.custom-hero__tag {
+  display: inline-block;
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--jj-radius);
+}
+.custom-hero__tag--ghost {
+  background: transparent;
+  color: var(--jj-text);
+  border: 1px solid color-mix(in srgb, var(--jj-text) 18%, var(--jj-bg));
+}
+.custom-hero__content {
+  position: relative;
+  z-index: 1;
+  padding: 1rem clamp(1rem, 3.5vw, 3rem) clamp(1.5rem, 4vh, 3rem);
+}
+.custom-hero__heading {
+  color: var(--jj-text);
+  font-size: clamp(3rem, 13.5vw, 11rem);
+  letter-spacing: -0.015em;
+  margin: 0 0 1.4rem;
+  max-width: 100%;
+}
+.custom-hero__heading-stroke {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--jj-accent);
+}
+@supports not (-webkit-text-stroke: 1px black) {
+  .custom-hero__heading-stroke {
+    color: var(--jj-accent);
+  }
+}
+.custom-hero__sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+.custom-hero__subheading {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--jj-muted);
+  font-family: var(--jj-font-body);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.custom-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.custom-hero__button {
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.custom-hero__button--ghost {
+  background: transparent;
+  color: var(--jj-text);
+  border: 2px solid var(--jj-text);
+}
+.custom-hero__button--ghost:hover,
+.custom-hero__button--ghost:focus-visible {
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+  border-color: var(--jj-accent);
+}
+
+/* ---- custom-hero marquee (extension beyond the brief's verbatim code,
+   authorized to reach mockup fidelity — see task-5-report.md) ---- */
+.custom-hero__marquee {
+  overflow: hidden;
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+  border-bottom: 2px solid var(--jj-text);
+  padding-block: 0.65rem;
+}
+.custom-hero__marquee-track {
+  display: flex;
+  width: max-content;
+  animation: jj-hero-marquee-scroll 22s linear infinite;
+}
+.custom-hero__marquee-group {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: var(--jj-font-heading);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.custom-hero__marquee-group span {
+  padding-inline: 1.25rem;
+  position: relative;
+}
+.custom-hero__marquee-group span + span::before {
+  content: '\2715';
+  position: absolute;
+  left: -0.1rem;
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+}
+@keyframes jj-hero-marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .custom-hero__marquee-track {
+    animation: none;
+  }
+}
+
+/* ---- new arrivals (featured-collection, homepage instance only) ----
+   featured-collection.liquid <link>-injects component-card.css inside its
+   own output, which lands in <body> — after custom.css's <head> <link> —
+   so an unscoped `.card` rule would lose ties to Dawn's own card rules
+   (e.g. `.card--standard .card__inner { border: ... }`, specificity 0,2,0).
+   Confirmed against the dev server's served HTML that Shopify renders JSON
+   template sections as `<section id="shopify-section-template--{template
+   id}__{key}" class="shopify-section ...">` — the numeric template id is
+   assigned per theme deploy and isn't something to hard-code, so this uses
+   an attribute "ends with" selector on the stable part (the "new_arrivals"
+   key from templates/index.json) instead of a literal #id. Chaining
+   `.shopify-section[id$="__new_arrivals"]` with the target class reaches
+   0,3,0 specificity, beating component-card.css's 0,2,0 rule outright
+   (no source-order tie-break needed), while keeping the override confined
+   to this one homepage section instead of leaking into collection/product
+   pages (those get their own pass in custom.css sections 5–6). */
+.shopify-section[id$='__new_arrivals'] .card,
+.shopify-section[id$='__new_arrivals'] .card__inner {
+  background: var(--jj-surface);
+  border-color: color-mix(in srgb, var(--jj-text) 12%, var(--jj-bg));
+  border-radius: var(--jj-radius);
+}
+.shopify-section[id$='__new_arrivals'] .card__heading,
+.shopify-section[id$='__new_arrivals'] .card__heading a {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+}
+.shopify-section[id$='__new_arrivals'] .card:hover .card__heading a,
+.shopify-section[id$='__new_arrivals'] .card:focus-within .card__heading a {
+  color: var(--jj-accent);
+}
+.shopify-section[id$='__new_arrivals'] .price,
+.shopify-section[id$='__new_arrivals'] .price .price-item {
+  color: var(--jj-muted);
+  font-weight: 700;
+}
+
+/* ---- lookbook ----
+   Restructured from the brief's single "lookbook page-width" div into an
+   outer full-bleed band + inner page-width wrapper so the surface
+   background/border can span edge-to-edge like the mockup's .lookbook
+   section, while the heading/grid still respect the page gutters. */
+.lookbook {
+  background: var(--jj-surface);
+  border-block: 2px solid var(--jj-text);
+}
+.lookbook__inner {
+  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+}
+.lookbook__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+.lookbook__heading {
+  color: var(--jj-text);
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  letter-spacing: -0.01em;
+}
+.lookbook__heading-accent {
+  color: var(--jj-accent);
+}
+.lookbook__head-link {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--jj-text);
+  border-bottom: 2px solid var(--jj-accent);
+  padding-bottom: 0.25rem;
+}
+.lookbook__head-link:hover,
+.lookbook__head-link:focus-visible {
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+}
+.lookbook__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+@media screen and (max-width: 749px) {
+  .lookbook__grid {
+    grid-template-columns: 1fr;
+  }
+}
+.lookbook__item {
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--jj-text) 12%, var(--jj-bg));
+}
+.lookbook__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.lookbook__image--placeholder {
+  background: var(--jj-bg);
+}
+.lookbook__caption {
+  padding: 0.9rem 1rem;
+  font-family: var(--jj-font-heading);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+
+/* ---- newsletter (standalone homepage section) ----
+   .newsletter__wrapper carries no background of its own in Dawn's
+   newsletter-section.css (confirmed by reading the file) — its bg comes
+   from the `.gradient`/`.color-scheme-N` classes in base.css, which loads
+   in <head> before custom.css, so this plain override wins the tie
+   without needing extra specificity (unlike the footer's newsletter
+   instance styled in section 3, which shares selectors with the
+   body-injected component-newsletter.css and does need the boost). */
+.newsletter__wrapper {
+  background: var(--jj-surface);
+}

@@ -1,0 +1,120 @@
+<div class="custom-hero{% if section.settings.full_height %} custom-hero--full{% endif %}">
+  <div class="custom-hero__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 3000
+        | image_tag:
+          class: 'custom-hero__image',
+          loading: 'eager',
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2200, 3000'
+      }}
+    {%- else -%}
+      <div class="custom-hero__placeholder" role="img" aria-label="Campaign image placeholder"></div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.badge_text != blank or section.settings.badge_text_secondary != blank -%}
+    <div class="custom-hero__meta">
+      {%- if section.settings.badge_text != blank -%}
+        <span class="custom-hero__tag">{{ section.settings.badge_text | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.badge_text_secondary != blank -%}
+        <span class="custom-hero__tag custom-hero__tag--ghost">{{ section.settings.badge_text_secondary | escape }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="custom-hero__content">
+    {%- liquid
+      assign hero_heading_words = section.settings.heading | split: ' '
+      assign hero_heading_word_count = hero_heading_words | size
+    -%}
+    <h1 class="custom-hero__heading">
+      {%- if section.settings.stroke_last_word and hero_heading_word_count > 1 -%}
+        {%- assign hero_heading_last = hero_heading_words | last -%}
+        {%- assign hero_heading_lead = section.settings.heading | remove: hero_heading_last | strip -%}
+        {{- hero_heading_lead | escape }} <span class="custom-hero__heading-stroke">{{ hero_heading_last | escape }}</span>
+      {%- else -%}
+        {{- section.settings.heading | escape -}}
+      {%- endif -%}
+    </h1>
+    <div class="custom-hero__sub">
+      {%- if section.settings.subheading != blank -%}
+        <p class="custom-hero__subheading">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+        <div class="custom-hero__cta">
+          {%- if section.settings.button_label != blank -%}
+            <a
+              href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+              class="button custom-hero__button"
+            >
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a
+              href="{{ section.settings.button_link_2 | default: '#lookbook' }}"
+              class="button custom-hero__button custom-hero__button--ghost"
+            >
+              {{- section.settings.button_label_2 | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.show_marquee and section.settings.marquee_text != blank -%}
+  {%- comment -%}
+    Decorative ticker only: both repeated groups are wrapped in a single
+    aria-hidden container so screen readers skip the duplicated text
+    entirely (the same copy is already conveyed by the heading/CTA above).
+    Respects prefers-reduced-motion via CSS (assets/custom.css section 4).
+  {%- endcomment -%}
+  <div class="custom-hero__marquee" aria-hidden="true">
+    <div class="custom-hero__marquee-track">
+      {%- for group in (1..2) -%}
+        <div class="custom-hero__marquee-group">
+          {%- for repeat in (1..4) -%}
+            <span>{{ section.settings.marquee_text | escape }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Custom hero",
+  "tag": "section",
+  "class": "section-custom-hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Loud by design." },
+    {
+      "type": "checkbox",
+      "id": "stroke_last_word",
+      "label": "Outline the last word in accent color",
+      "default": true
+    },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Heavyweight cuts. Zero apologies. One drop, then it's gone — streetwear built for volume, worn at full blast." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the drop" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "button_label_2", "label": "Second button label", "default": "Lookbook" },
+    { "type": "url", "id": "button_link_2", "label": "Second button link", "info": "Defaults to the Lookbook section on this page." },
+    { "type": "checkbox", "id": "full_height", "label": "Full viewport height", "default": true },
+    { "type": "header", "content": "Badges" },
+    { "type": "text", "id": "badge_text", "label": "Badge", "default": "FW26" },
+    { "type": "text", "id": "badge_text_secondary", "label": "Second badge", "default": "Drop 01" },
+    { "type": "header", "content": "Marquee" },
+    { "type": "checkbox", "id": "show_marquee", "label": "Show scrolling marquee", "default": true },
+    { "type": "text", "id": "marquee_text", "label": "Marquee text", "default": "New drop — Loud by design — No restocks" }
+  ],
+  "presets": [{ "name": "Custom hero" }]
+}
+{% endschema %}
