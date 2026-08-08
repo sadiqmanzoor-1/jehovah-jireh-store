@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JEHOVAH JIREH — v2 Terra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,450;0,9..144,550;1,9..144,450&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   JEHOVAH JIREH — Direction v2 "Terra"
+   Warm, earthy, modern.
+   Signature moves: soft rounded cards, cream/clay warmth,
+   arched hero image mask.
+   ============================================================ */
+
+:root {
+  --jj-bg: #F5F0E8;
+  --jj-surface: #EDE5D8;
+  --jj-text: #2E2A24;
+  --jj-muted: #8A8071;
+  --jj-accent: #B4552D;
+  --jj-font-heading: 'Fraunces', Georgia, serif;
+  --jj-font-body: 'DM Sans', -apple-system, Helvetica, Arial, sans-serif;
+  --jj-radius: 12px;
+
+  /* derived, terra-only */
+  --jj-radius-lg: calc(var(--jj-radius) * 2);
+  --jj-arch: 999px 999px var(--jj-radius) var(--jj-radius);
+  --jj-shadow: 0 14px 34px -18px rgba(46, 42, 36, 0.35);
+  --jj-gutter: clamp(1.25rem, 4vw, 4rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--jj-bg);
+  color: var(--jj-text);
+  font-family: var(--jj-font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--jj-font-heading);
+  font-weight: 550;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+
+.wrap { padding-inline: var(--jj-gutter); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jj-accent);
+}
+.kicker::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--jj-accent);
+}
+
+/* ---------- announcement bar ---------- */
+
+.announce {
+  background: var(--jj-accent);
+  color: var(--jj-bg);
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--jj-bg) 90%, transparent);
+  backdrop-filter: blur(10px);
+}
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 4.5rem;
+}
+.logo {
+  font-family: var(--jj-font-heading);
+  font-weight: 550;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.logo em { font-style: italic; color: var(--jj-accent); }
+.main-nav { display: flex; gap: clamp(1rem, 2.5vw, 2rem); }
+.main-nav a {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.main-nav a:hover, .main-nav a:focus-visible { background: var(--jj-surface); }
+
+.header-tools { display: flex; align-items: center; gap: 0.75rem; }
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--jj-text);
+  color: var(--jj-bg);
+  border-radius: 999px;
+  padding: 0.5rem 1.05rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.25s ease;
+}
+.cart-link:hover { background: var(--jj-accent); }
+.cart-link svg { display: block; }
+.menu-btn {
+  display: none;
+  background: var(--jj-surface);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.65rem 0.7rem;
+  cursor: pointer;
+}
+.menu-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--jj-text);
+}
+.menu-btn span + span { margin-top: 4px; }
+
+/* ---------- hero ---------- */
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-block: clamp(2rem, 5vh, 4rem);
+}
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5.6vw, 4.9rem);
+  line-height: 1.04;
+  max-width: 13ch;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 450;
+  color: var(--jj-accent);
+}
+.hero-copy p {
+  max-width: 44ch;
+  color: var(--jj-muted);
+  font-size: 1.0625rem;
+  margin: 0;
+}
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+
+.btn {
+  display: inline-block;
+  border: 0;
+  border-radius: 999px;
+  padding: 1rem 2.1rem;
+  background: var(--jj-accent);
+  color: #FFF9F0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: var(--jj-shadow);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.btn:hover, .btn:focus-visible { background: var(--jj-text); transform: translateY(-2px); }
+.btn--ghost {
+  background: transparent;
+  color: var(--jj-text);
+  box-shadow: none;
+  border: 1.5px solid var(--jj-text);
+}
+.btn--ghost:hover, .btn--ghost:focus-visible { background: var(--jj-text); color: var(--jj-bg); }
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  color: var(--jj-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.hero-proof span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.hero-proof span::before { content: "✳"; color: var(--jj-accent); }
+
+/* the arch */
+.hero-media { position: relative; }
+.hero-arch {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 76vh;
+  margin-inline: auto;
+  border-radius: var(--jj-arch);
+  overflow: hidden;
+  box-shadow: var(--jj-shadow);
+  background:
+    radial-gradient(closest-side circle at 50% 34%, #F3D9A8 0 22%, transparent 23%),
+    radial-gradient(120% 55% at 50% 108%, #55503C 0 45%, transparent 72%),
+    linear-gradient(180deg, #EBCB96 0%, #D89A5C 38%, #B4552D 66%, #7C5237 88%, #55503C 100%);
+}
+/* echo arch, offset behind */
+.hero-media::before {
+  content: "";
+  position: absolute;
+  inset: 6% -4% -3% 4%;
+  border-radius: var(--jj-arch);
+  border: 1.5px solid var(--jj-accent);
+  opacity: 0.45;
+  z-index: -1;
+}
+.hero-arch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(46, 42, 36, 0.02) 0 2px,
+    transparent 2px 5px
+  );
+}
+.arch-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%);
+  z-index: 1;
+  background: color-mix(in srgb, var(--jj-bg) 88%, transparent);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jj-text);
+  white-space: nowrap;
+}
+
+/* ---------- section scaffolding ---------- */
+
+.section { padding-block: clamp(4rem, 9vw, 7rem); }
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 4.5vw, 3.25rem);
+}
+.section-head h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.7rem);
+  line-height: 1.1;
+  max-width: 18ch;
+}
+.section-head h2 em { font-style: italic; font-weight: 450; color: var(--jj-accent); }
+.section-head .kicker { margin-bottom: 0.9rem; }
+.head-link {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--jj-accent);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.25s ease;
+}
+.head-link:hover { border-bottom-color: var(--jj-accent); }
+
+/* ---------- new arrivals ---------- */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.product {
+  background: var(--jj-surface);
+  border-radius: var(--jj-radius-lg);
+  padding: 0.75rem 0.75rem 1.25rem;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.product:hover, .product:focus-within {
+  transform: translateY(-5px);
+  box-shadow: var(--jj-shadow);
+}
+.product-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--jj-radius);
+  margin-bottom: 1rem;
+}
+.product-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product:hover .ph, .product:focus-within .ph { transform: scale(1.07); }
+.ph--coat {
+  background:
+    radial-gradient(110% 75% at 25% 12%, rgba(255, 244, 224, 0.35), transparent 55%),
+    linear-gradient(165deg, #8A5A3B 0%, #6B4529 55%, #4A2F1C 100%);
+}
+.ph--linen {
+  background:
+    radial-gradient(110% 80% at 70% 10%, rgba(255, 250, 238, 0.8), transparent 60%),
+    linear-gradient(195deg, #F0E2C4 0%, #E0CBA0 55%, #C9AC7C 100%);
+}
+.ph--trouser {
+  background:
+    radial-gradient(100% 70% at 30% 92%, rgba(46, 42, 36, 0.25), transparent 55%),
+    linear-gradient(155deg, #8D8A5F 0%, #6F6C47 55%, #545236 100%);
+}
+.ph--cardigan {
+  background:
+    radial-gradient(120% 85% at 72% 8%, rgba(255, 244, 224, 0.5), transparent 55%),
+    linear-gradient(170deg, #DCA271 0%, #C77F4B 55%, #9C5A2E 100%);
+}
+.badge {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 1;
+  background: var(--jj-bg);
+  color: var(--jj-accent);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.product-name {
+  font-family: var(--jj-font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  padding-inline: 0.5rem;
+}
+.product-price {
+  color: var(--jj-accent);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  margin: 0;
+  padding-inline: 0.5rem;
+}
+
+/* ---------- lookbook ---------- */
+
+.lookbook { background: var(--jj-surface); }
+.lookbook-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: end;
+}
+.look { margin: 0; }
+.look-media {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--jj-shadow);
+}
+.look--arch .look-media {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--jj-arch);
+}
+.look--card .look-media {
+  aspect-ratio: 4 / 4.4;
+  border-radius: var(--jj-radius-lg);
+}
+.look-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.look:hover .ph { transform: scale(1.05); }
+.ph--look1 {
+  background:
+    radial-gradient(closest-side circle at 72% 24%, #F3D9A8 0 14%, transparent 15%),
+    radial-gradient(130% 60% at 50% 112%, #545236 0 42%, transparent 70%),
+    linear-gradient(180deg, #D9E0C8 0%, #A8B183 45%, #7A8256 75%, #545236 100%);
+}
+.ph--look2 {
+  background:
+    radial-gradient(110% 70% at 22% 100%, rgba(46, 42, 36, 0.35), transparent 60%),
+    radial-gradient(90% 55% at 78% 6%, rgba(255, 248, 232, 0.55), transparent 55%),
+    linear-gradient(200deg, #E8C39B 0%, #CE8B57 48%, #A75F33 78%, #7C4526 100%);
+}
+.look figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 0.4rem 0;
+}
+.look-title {
+  font-family: var(--jj-font-heading);
+  font-style: italic;
+  font-weight: 450;
+  font-size: 1.25rem;
+}
+.look-note {
+  color: var(--jj-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- newsletter ---------- */
+
+.newsletter-card {
+  background:
+    radial-gradient(120% 120% at 85% -10%, rgba(180, 85, 45, 0.16), transparent 55%),
+    var(--jj-surface);
+  border-radius: calc(var(--jj-radius) * 3);
+  padding: clamp(2.5rem, 6vw, 4.5rem);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.3rem;
+}
+.newsletter-card h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); max-width: 20ch; }
+.newsletter-card h2 em { font-style: italic; font-weight: 450; color: var(--jj-accent); }
+.newsletter-card p { margin: 0; color: var(--jj-muted); max-width: 44ch; }
+.newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+  width: min(100%, 30rem);
+  background: var(--jj-bg);
+  border-radius: 999px;
+  padding: 0.4rem;
+  box-shadow: inset 0 0 0 1.5px rgba(138, 128, 113, 0.35);
+}
+.newsletter-form input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.9375rem;
+  outline-offset: 4px;
+}
+.newsletter-form input::placeholder { color: var(--jj-muted); }
+.newsletter-form .btn { padding: 0.7rem 1.5rem; box-shadow: none; }
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  background: var(--jj-text);
+  color: var(--jj-bg);
+  border-radius: var(--jj-radius-lg) var(--jj-radius-lg) 0 0;
+  padding-block: clamp(3rem, 6vw, 5rem) 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+.footer-col h3 {
+  font-family: var(--jj-font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C9BFAE;
+  margin-bottom: 1.1rem;
+}
+.footer-col ul { list-style: none; margin: 0; padding: 0; }
+.footer-col li + li { margin-top: 0.6rem; }
+.footer-col a, .footer-col p {
+  font-size: 0.9375rem;
+  color: var(--jj-bg);
+  opacity: 0.85;
+  margin: 0;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+.footer-col a:hover { color: #E89B6F; opacity: 1; }
+.footer-bottom {
+  border-top: 1px solid rgba(245, 240, 232, 0.18);
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 2.5rem;
+    padding-top: 2rem;
+  }
+  .hero-arch { max-width: 26rem; width: 100%; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .main-nav { display: none; }
+  .menu-btn { display: block; }
+  .cart-count-label { display: none; }
+  .lookbook-grid { grid-template-columns: 1fr; align-items: stretch; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .newsletter-form { flex-direction: column; border-radius: var(--jj-radius-lg); }
+  .newsletter-form .btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="announce" role="region" aria-label="Announcement">
+  Free shipping over $100 · Made in small batches, dyed with the earth
+</div>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="logo" href="#">Jehovah <em>Jireh</em></a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#">Shop</a>
+      <a href="#">Lookbook</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="header-tools">
+      <a class="cart-link" href="#" aria-label="Cart, 0 items">
+        <svg width="15" height="17" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M1.5 5.5h13l-1 11h-11l-1-11Z"/>
+          <path d="M5 5.5V4a3 3 0 0 1 6 0v1.5"/>
+        </svg>
+        <span class="cart-count-label">Cart · 0</span>
+      </a>
+      <button class="menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- hero -->
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <span class="kicker">New — FW26 collection</span>
+      <h1>Earth-toned essentials, <em>every day.</em></h1>
+      <p>Cream, clay and olive — natural fibres in silhouettes soft enough to
+        live in. Dyed in small batches with plants, not plastic.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#">Shop new arrivals</a>
+        <a class="btn btn--ghost" href="#">Explore the lookbook</a>
+      </div>
+      <div class="hero-proof">
+        <span>Natural dyes</span>
+        <span>Small batch</span>
+        <span>Fair ateliers</span>
+      </div>
+    </div>
+    <div class="hero-media">
+      <figure class="hero-arch" role="img" aria-label="Warm campaign image placeholder: sun over clay-toned dunes">
+      </figure>
+      <span class="arch-caption">FW26 — Shot in warm light</span>
+    </div>
+  </section>
+
+  <!-- new arrivals -->
+  <section class="section wrap" aria-labelledby="arrivals-title">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Fresh from the atelier</span>
+        <h2 id="arrivals-title">New arrivals, <em>worn on repeat</em></h2>
+      </div>
+      <a class="head-link" href="#">View all →</a>
+    </div>
+    <div class="products">
+      <article class="product">
+        <a href="#" aria-label="Oversized Wool Coat, $189">
+          <div class="product-media"><span class="badge">New</span><div class="ph ph--coat"></div></div>
+          <h3 class="product-name">Oversized Wool Coat</h3>
+          <p class="product-price">$189</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Relaxed Linen Shirt, $79">
+          <div class="product-media"><div class="ph ph--linen"></div></div>
+          <h3 class="product-name">Relaxed Linen Shirt</h3>
+          <p class="product-price">$79</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Wide-Leg Trouser, $95">
+          <div class="product-media"><div class="ph ph--trouser"></div></div>
+          <h3 class="product-name">Wide-Leg Trouser</h3>
+          <p class="product-price">$95</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Knit Longline Cardigan, $120">
+          <div class="product-media"><span class="badge">Back</span><div class="ph ph--cardigan"></div></div>
+          <h3 class="product-name">Knit Longline Cardigan</h3>
+          <p class="product-price">$120</p>
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- lookbook -->
+  <section class="section lookbook" aria-labelledby="lookbook-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker">The lookbook</span>
+          <h2 id="lookbook-title">Warm light, <em>soft ground</em></h2>
+        </div>
+        <a class="head-link" href="#">See every look →</a>
+      </div>
+      <div class="lookbook-grid">
+        <figure class="look look--arch">
+          <div class="look-media"><div class="ph ph--look1"></div></div>
+          <figcaption>
+            <span class="look-title">Olive hour</span>
+            <span class="look-note">Look 02 — linen &amp; knit</span>
+          </figcaption>
+        </figure>
+        <figure class="look look--card">
+          <div class="look-media"><div class="ph ph--look2"></div></div>
+          <figcaption>
+            <span class="look-title">Clay studio</span>
+            <span class="look-note">Look 09 — full wool</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- newsletter -->
+  <section class="section wrap" aria-labelledby="newsletter-title">
+    <div class="newsletter-card">
+      <span class="kicker">The Terra letter</span>
+      <h2 id="newsletter-title">Slow news, <em>warm colours</em></h2>
+      <p>One email a month — new dye lots, restocks and studio notes. No noise.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <label for="nl-email" class="visually-hidden">Email address</label>
+        <input id="nl-email" type="email" name="email" placeholder="you@example.com" required>
+        <button class="btn" type="submit">Join</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Menu</h3>
+        <ul>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">Lookbook</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Care &amp; repair</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:hello@jehovahjireh.example">hello@jehovahjireh.example</a></li>
+          <li><p>Studio 4, Terracotta Yard</p></li>
+          <li><p>Tue – Sat, 10:00 – 18:00</p></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Social</h3>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Pinterest</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Jehovah Jireh</span>
+      <span>Dyed with the earth, worn every day</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

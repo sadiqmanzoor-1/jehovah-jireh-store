@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JEHOVAH JIREH — v1 Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   JEHOVAH JIREH — Direction v1 "Atelier"
+   Minimal black-and-white editorial.
+   Signature moves: thin rules, generous whitespace,
+   uppercase letter-spaced nav.
+   ============================================================ */
+
+:root {
+  --jj-bg: #FAFAF8;
+  --jj-surface: #FFFFFF;
+  --jj-text: #111111;
+  --jj-muted: #6B6B6B;
+  --jj-accent: #111111;
+  --jj-font-heading: 'Playfair Display', Georgia, serif;
+  --jj-font-body: 'Inter', -apple-system, Helvetica, Arial, sans-serif;
+  --jj-radius: 0;
+
+  /* derived, atelier-only */
+  --jj-rule: rgba(17, 17, 17, 0.14);
+  --jj-rule-strong: rgba(17, 17, 17, 0.85);
+  --jj-track: 0.18em;
+  --jj-gutter: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--jj-bg);
+  color: var(--jj-text);
+  font-family: var(--jj-font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { font-family: var(--jj-font-heading); font-weight: 400; margin: 0; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+
+.wrap { padding-inline: var(--jj-gutter); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.eyebrow {
+  font-family: var(--jj-font-body);
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+
+/* ---------- announcement bar ---------- */
+
+.announce {
+  background: var(--jj-surface);
+  border-bottom: 1px solid var(--jj-rule);
+  text-align: center;
+  padding: 0.55rem 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+.announce strong { color: var(--jj-text); font-weight: 500; }
+
+/* ---------- header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--jj-bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--jj-rule);
+}
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 4.25rem;
+}
+.logo {
+  font-family: var(--jj-font-heading);
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.main-nav { display: flex; gap: clamp(1.25rem, 3vw, 2.75rem); }
+.main-nav a {
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  padding-block: 0.35rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+.main-nav a:hover, .main-nav a:focus-visible { border-bottom-color: var(--jj-rule-strong); }
+
+.header-tools { display: flex; align-items: center; gap: 1rem; }
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+}
+.cart-link svg { display: block; }
+.menu-btn {
+  display: none;
+  background: none;
+  border: 1px solid var(--jj-rule);
+  border-radius: var(--jj-radius);
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+}
+.menu-btn span {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--jj-text);
+}
+.menu-btn span + span { margin-top: 5px; }
+
+/* ---------- hero ---------- */
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--jj-rule);
+}
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.75rem;
+  padding: clamp(2.5rem, 6vw, 6rem) var(--jj-gutter);
+}
+.hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.hero-kicker::before {
+  content: "";
+  width: 3.5rem;
+  height: 1px;
+  background: var(--jj-rule-strong);
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 5.4vw, 4.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  max-width: 12ch;
+}
+.hero h1 em { font-style: italic; }
+.hero-copy p {
+  max-width: 42ch;
+  color: var(--jj-muted);
+  margin: 0;
+}
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.75rem; }
+
+.btn {
+  display: inline-block;
+  padding: 0.95rem 2.4rem;
+  border: 1px solid var(--jj-accent);
+  border-radius: var(--jj-radius);
+  background: transparent;
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.btn:hover, .btn:focus-visible { background: var(--jj-accent); color: var(--jj-bg); }
+.btn--solid { background: var(--jj-accent); color: var(--jj-bg); }
+.btn--solid:hover, .btn--solid:focus-visible { background: transparent; color: var(--jj-text); }
+
+.text-link {
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--jj-rule-strong);
+  padding-bottom: 0.2rem;
+}
+
+.hero-media {
+  position: relative;
+  border-left: 1px solid var(--jj-rule);
+  min-height: 24rem;
+  background:
+    radial-gradient(120% 85% at 18% 8%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(90% 70% at 85% 95%, rgba(17, 17, 17, 0.22), transparent 60%),
+    linear-gradient(158deg, #ECECE8 0%, #D6D6D1 42%, #ABABA5 78%, #8F8F89 100%);
+}
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(17, 17, 17, 0.025) 0 1px,
+    transparent 1px 3px
+  );
+  pointer-events: none;
+}
+.hero-media figcaption {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.25rem;
+  z-index: 1;
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+
+/* ---------- section scaffolding ---------- */
+
+.section { padding-block: clamp(4rem, 9vw, 7.5rem); }
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 4.5vw, 3.5rem);
+}
+.section-head h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.15;
+}
+.section-index {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- new arrivals ---------- */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--jj-rule);
+  border-block: 1px solid var(--jj-rule);
+}
+.product { background: var(--jj-bg); padding: 1.25rem 1.25rem 1.6rem; }
+.product-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--jj-radius);
+  margin-bottom: 1.1rem;
+}
+.product-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product:hover .ph, .product:focus-within .ph { transform: scale(1.06); }
+.ph--coat {
+  background:
+    radial-gradient(110% 80% at 22% 10%, rgba(255, 255, 255, 0.28), transparent 55%),
+    linear-gradient(160deg, #6E6E68 0%, #4A4A45 55%, #2C2C29 100%);
+}
+.ph--linen {
+  background:
+    radial-gradient(110% 80% at 75% 12%, rgba(255, 255, 255, 0.75), transparent 60%),
+    linear-gradient(200deg, #F1F1EC 0%, #DBDBD4 60%, #C2C2BA 100%);
+}
+.ph--trouser {
+  background:
+    radial-gradient(100% 75% at 30% 90%, rgba(17, 17, 17, 0.2), transparent 55%),
+    linear-gradient(150deg, #C9C9C3 0%, #A8A8A1 55%, #83837C 100%);
+}
+.ph--cardigan {
+  background:
+    radial-gradient(120% 85% at 70% 8%, rgba(255, 255, 255, 0.45), transparent 55%),
+    linear-gradient(165deg, #D9D6CE 0%, #B4B0A5 55%, #8C887C 100%);
+}
+.product-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(17, 17, 17, 0.02) 0 1px,
+    transparent 1px 3px
+  );
+  pointer-events: none;
+}
+.product-num {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  color: var(--jj-muted);
+  margin-bottom: 0.45rem;
+}
+.product-name {
+  font-family: var(--jj-font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.25rem;
+}
+.product-price { color: var(--jj-muted); font-size: 0.8125rem; margin: 0; }
+
+/* ---------- lookbook ---------- */
+
+.lookbook-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.look { margin: 0; }
+.look-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--jj-rule);
+  border-radius: var(--jj-radius);
+}
+.look-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.look:hover .ph { transform: scale(1.04); }
+.ph--look1 {
+  background:
+    radial-gradient(130% 90% at 15% 5%, rgba(255, 255, 255, 0.55), transparent 55%),
+    linear-gradient(170deg, #E4E4DF 0%, #BEBEB7 50%, #90908A 100%);
+}
+.ph--look2 {
+  background:
+    radial-gradient(110% 80% at 80% 90%, rgba(17, 17, 17, 0.3), transparent 55%),
+    linear-gradient(200deg, #D4D4CE 0%, #9E9E97 60%, #6F6F68 100%);
+}
+.look-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(17, 17, 17, 0.02) 0 1px,
+    transparent 1px 3px
+  );
+  pointer-events: none;
+}
+.look figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--jj-rule-strong);
+  margin-top: 1.25rem;
+}
+.look-title {
+  font-family: var(--jj-font-heading);
+  font-style: italic;
+  font-size: 1.1rem;
+}
+.look-note {
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+  white-space: nowrap;
+}
+
+/* ---------- newsletter ---------- */
+
+.newsletter {
+  border-block: 1px solid var(--jj-rule);
+  background: var(--jj-surface);
+  text-align: center;
+}
+.newsletter-inner {
+  max-width: 34rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.newsletter h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.newsletter h2 em { font-style: italic; }
+.newsletter p { margin: 0; color: var(--jj-muted); }
+.newsletter form {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--jj-rule-strong);
+}
+.newsletter input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.85rem 0.25rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  outline-offset: 4px;
+}
+.newsletter input::placeholder { color: var(--jj-muted); }
+.newsletter button {
+  border: 0;
+  background: transparent;
+  font-size: 0.6875rem;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.85rem 0.25rem;
+}
+.newsletter button:hover { color: var(--jj-muted); }
+
+/* ---------- footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--jj-rule);
+  padding-block: clamp(3rem, 6vw, 5rem) 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
+}
+.footer-col h3 {
+  font-family: var(--jj-font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--jj-track);
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+}
+.footer-col ul { list-style: none; margin: 0; padding: 0; }
+.footer-col li + li { margin-top: 0.55rem; }
+.footer-col a, .footer-col p {
+  font-size: 0.8125rem;
+  color: var(--jj-muted);
+  margin: 0;
+}
+.footer-col a:hover { color: var(--jj-text); }
+.footer-bottom {
+  border-top: 1px solid var(--jj-rule);
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-media { border-left: 0; border-top: 1px solid var(--jj-rule); min-height: 46vh; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .main-nav { display: none; }
+  .menu-btn { display: block; }
+  .cart-label { display: none; }
+  .lookbook-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="announce" role="region" aria-label="Announcement">
+  Complimentary shipping over $150 &nbsp;·&nbsp; <strong>Autumn–Winter 2026</strong> now showing
+</div>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="logo" href="#">Jehovah&nbsp;Jireh</a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#">Shop</a>
+      <a href="#">Lookbook</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="header-tools">
+      <a class="cart-link" href="#" aria-label="Cart, 0 items">
+        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+          <path d="M1.5 5.5h13l-1 11h-11l-1-11Z"/>
+          <path d="M5 5.5V4a3 3 0 0 1 6 0v1.5"/>
+        </svg>
+        <span class="cart-label">Cart&nbsp;(0)</span>
+      </a>
+      <button class="menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="hero-kicker eyebrow">Autumn – Winter 2026</span>
+      <h1>Quiet pieces, <em>made to last.</em></h1>
+      <p>Considered silhouettes in wool, linen and organic knit — cut in small
+        batches, finished by hand, designed to outlive the season.</p>
+      <div class="hero-cta">
+        <a class="btn btn--solid" href="#">Explore the collection</a>
+        <a class="text-link" href="#">Our atelier</a>
+      </div>
+    </div>
+    <figure class="hero-media" role="img" aria-label="Editorial campaign image placeholder">
+      <figcaption>Campaign — Look 03 of 14</figcaption>
+    </figure>
+  </section>
+
+  <!-- new arrivals -->
+  <section class="section wrap" aria-labelledby="arrivals-title">
+    <div class="section-head">
+      <h2 id="arrivals-title"><span class="section-index eyebrow">( 01 )</span>New arrivals</h2>
+      <a class="text-link" href="#">View all</a>
+    </div>
+    <div class="products">
+      <article class="product">
+        <a href="#" aria-label="Oversized Wool Coat, $189">
+          <div class="product-media"><div class="ph ph--coat"></div></div>
+          <span class="product-num">No. 01</span>
+          <h3 class="product-name">Oversized Wool Coat</h3>
+          <p class="product-price">$189</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Relaxed Linen Shirt, $79">
+          <div class="product-media"><div class="ph ph--linen"></div></div>
+          <span class="product-num">No. 02</span>
+          <h3 class="product-name">Relaxed Linen Shirt</h3>
+          <p class="product-price">$79</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Wide-Leg Trouser, $95">
+          <div class="product-media"><div class="ph ph--trouser"></div></div>
+          <span class="product-num">No. 03</span>
+          <h3 class="product-name">Wide-Leg Trouser</h3>
+          <p class="product-price">$95</p>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Knit Longline Cardigan, $120">
+          <div class="product-media"><div class="ph ph--cardigan"></div></div>
+          <span class="product-num">No. 04</span>
+          <h3 class="product-name">Knit Longline Cardigan</h3>
+          <p class="product-price">$120</p>
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- lookbook -->
+  <section class="section wrap" aria-labelledby="lookbook-title">
+    <div class="section-head">
+      <h2 id="lookbook-title"><span class="section-index eyebrow">( 02 )</span>The lookbook</h2>
+      <a class="text-link" href="#">All fourteen looks</a>
+    </div>
+    <div class="lookbook-grid">
+      <figure class="look">
+        <div class="look-media"><div class="ph ph--look1"></div></div>
+        <figcaption>
+          <span class="look-title">Morning, undone</span>
+          <span class="look-note">Look 01 — Wool &amp; linen</span>
+        </figcaption>
+      </figure>
+      <figure class="look">
+        <div class="look-media"><div class="ph ph--look2"></div></div>
+        <figcaption>
+          <span class="look-title">A long shadow</span>
+          <span class="look-note">Look 07 — Full knit</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- newsletter -->
+  <section class="section wrap newsletter" aria-labelledby="newsletter-title">
+    <div class="newsletter-inner">
+      <span class="eyebrow">( 03 ) — Correspondence</span>
+      <h2 id="newsletter-title">Notes from <em>the atelier</em></h2>
+      <p>One letter a month. New pieces, studio process, nothing else.</p>
+      <form action="#" method="post">
+        <label for="nl-email" class="visually-hidden">Email address</label>
+        <input id="nl-email" type="email" name="email" placeholder="Your email address" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h3>Menu</h3>
+      <ul>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Lookbook</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Care guide</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <ul>
+        <li><a href="mailto:studio@jehovahjireh.example">studio@jehovahjireh.example</a></li>
+        <li><p>12 Beacon Lane, Floor 2</p></li>
+        <li><p>Open Tue – Sat, 10:00 – 18:00</p></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Social</h3>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">Are.na</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jehovah Jireh</span>
+    <span>Quietly made</span>
+  </div>
+</footer>
+
+</body>
+</html>

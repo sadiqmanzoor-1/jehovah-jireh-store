@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JEHOVAH JIREH — v3 Static</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   JEHOVAH JIREH — Direction v3 "Static"
+   Bold streetwear.
+   Signature moves: full-width marquee strip, oversized type,
+   acid-yellow hover states.
+   ============================================================ */
+
+:root {
+  --jj-bg: #0E0E0E;
+  --jj-surface: #1A1A1A;
+  --jj-text: #F2F2F2;
+  --jj-muted: #9A9A9A;
+  --jj-accent: #D8FF3E;
+  --jj-font-heading: 'Archivo Black', Impact, sans-serif;
+  --jj-font-body: 'Space Grotesk', -apple-system, Helvetica, Arial, sans-serif;
+  --jj-radius: 0;
+
+  /* derived, static-only */
+  --jj-line: #2C2C2C;
+  --jj-ink: #0E0E0E; /* text on acid */
+  --jj-gutter: clamp(1rem, 3.5vw, 3rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--jj-bg);
+  color: var(--jj-text);
+  font-family: var(--jj-font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--jj-font-heading);
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+
+.wrap { padding-inline: var(--jj-gutter); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tag {
+  display: inline-block;
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--jj-radius);
+}
+.tag--ghost {
+  background: transparent;
+  color: var(--jj-text);
+  border: 1px solid var(--jj-line);
+}
+
+/* ---------- announcement bar ---------- */
+
+.announce {
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  text-align: center;
+  padding: 0.55rem 1rem;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------- header ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--jj-bg);
+  border-bottom: 2px solid var(--jj-text);
+}
+.site-header .bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4rem;
+}
+.logo {
+  font-family: var(--jj-font-heading);
+  font-size: clamp(1rem, 2.6vw, 1.35rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.logo sup {
+  font-family: var(--jj-font-body);
+  font-weight: 700;
+  font-size: 0.6em;
+  color: var(--jj-accent);
+  margin-left: 0.4em;
+}
+.main-nav { display: flex; align-items: stretch; }
+.main-nav a {
+  display: flex;
+  align-items: center;
+  padding-inline: clamp(0.8rem, 2vw, 1.4rem);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-left: 1px solid var(--jj-line);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.main-nav a:last-child { border-right: 1px solid var(--jj-line); }
+.main-nav a:hover, .main-nav a:focus-visible {
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+}
+.header-tools { display: flex; align-items: center; gap: 0.75rem; }
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--jj-text);
+  padding: 0.5rem 0.9rem;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.cart-link:hover, .cart-link:focus-visible {
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  border-color: var(--jj-accent);
+}
+.cart-link svg { display: block; }
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--jj-text);
+  padding: 0.55rem 0.65rem;
+  cursor: pointer;
+}
+.menu-btn:hover { background: var(--jj-accent); border-color: var(--jj-accent); }
+.menu-btn:hover span { background: var(--jj-ink); }
+.menu-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--jj-text);
+}
+.menu-btn span + span { margin-top: 4px; }
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-bottom: 2px solid var(--jj-text);
+}
+/* gradient "campaign image" slab */
+.hero-slab {
+  position: absolute;
+  inset: 0 0 0 32%;
+  background:
+    repeating-linear-gradient(0deg, rgba(14, 14, 14, 0.55) 0 2px, transparent 2px 6px),
+    conic-gradient(from 210deg at 68% 38%, #1A1A1A 0deg, #3A3A3A 70deg, #D8FF3E 92deg, #1F2405 96deg, #1A1A1A 150deg, #2E2E2E 230deg, #101010 360deg);
+}
+.hero-slab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--jj-bg) 0%, transparent 34%),
+    linear-gradient(0deg, var(--jj-bg) 4%, transparent 42%);
+}
+.hero-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+  padding: 1.5rem var(--jj-gutter) 0;
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 1rem var(--jj-gutter) clamp(1.5rem, 4vh, 3rem);
+}
+.hero h1 {
+  font-size: clamp(3rem, 13.5vw, 11rem);
+  letter-spacing: -0.015em;
+  margin-bottom: 1.4rem;
+  max-width: 100%;
+}
+.hero h1 .stroke {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--jj-accent);
+}
+.hero-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+.hero-sub p {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--jj-muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  border: 2px solid var(--jj-accent);
+  border-radius: var(--jj-radius);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.btn:hover, .btn:focus-visible { background: transparent; color: var(--jj-accent); }
+.btn--ghost { background: transparent; color: var(--jj-text); border-color: var(--jj-text); }
+.btn--ghost:hover, .btn--ghost:focus-visible {
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  border-color: var(--jj-accent);
+}
+
+/* ---------- marquee ---------- */
+
+.marquee {
+  overflow: hidden;
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  border-bottom: 2px solid var(--jj-text);
+  padding-block: 0.65rem;
+}
+.marquee--invert {
+  background: var(--jj-bg);
+  color: var(--jj-text);
+  border-top: 0;
+  border-bottom: 1px solid var(--jj-line);
+}
+.marquee--invert .x { color: var(--jj-accent); }
+.marquee--invert .marquee-track { animation-direction: reverse; }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: jj-scroll 22s linear infinite;
+}
+.marquee-group {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: var(--jj-font-heading);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.marquee-group span { padding-inline: 1.25rem; }
+.marquee-group .x { font-family: var(--jj-font-body); font-weight: 700; }
+@keyframes jj-scroll {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* ---------- section scaffolding ---------- */
+
+.section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+.section-head h2 {
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  letter-spacing: -0.01em;
+}
+.section-head h2 .accent { color: var(--jj-accent); }
+.head-link {
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--jj-accent);
+  padding-bottom: 0.25rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.head-link:hover { background: var(--jj-accent); color: var(--jj-ink); }
+
+/* ---------- new arrivals ---------- */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--jj-line);
+  border-right: 0;
+}
+.product {
+  background: var(--jj-surface);
+  border-right: 1px solid var(--jj-line);
+  transition: outline-color 0.15s ease;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+.product:hover, .product:focus-within { outline-color: var(--jj-accent); z-index: 1; }
+.product > a { display: block; }
+.product-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-bottom: 1px solid var(--jj-line);
+}
+.product-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product:hover .ph, .product:focus-within .ph { transform: scale(1.07); }
+.ph--coat {
+  background:
+    linear-gradient(135deg, transparent 0 62%, #D8FF3E 62% 66%, transparent 66%),
+    radial-gradient(120% 90% at 20% 8%, #3E3E3E, transparent 55%),
+    linear-gradient(160deg, #2E2E2E 0%, #191919 60%, #0F0F0F 100%);
+}
+.ph--linen {
+  background:
+    linear-gradient(45deg, transparent 0 70%, #D8FF3E 70% 73%, transparent 73%),
+    radial-gradient(110% 80% at 75% 10%, #6E6E6E, transparent 60%),
+    linear-gradient(200deg, #575757 0%, #333333 60%, #1C1C1C 100%);
+}
+.ph--trouser {
+  background:
+    linear-gradient(160deg, transparent 0 55%, #D8FF3E 55% 58%, transparent 58%),
+    radial-gradient(100% 75% at 30% 92%, #0A0A0A, transparent 55%),
+    linear-gradient(150deg, #4A4A4A 0%, #2A2A2A 55%, #161616 100%);
+}
+.ph--cardigan {
+  background:
+    linear-gradient(115deg, transparent 0 48%, #D8FF3E 48% 51%, transparent 51%),
+    radial-gradient(120% 85% at 70% 8%, #5A5A52, transparent 55%),
+    linear-gradient(165deg, #45453E 0%, #262622 60%, #121210 100%);
+}
+.product-media .tag {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 1;
+}
+.product-info {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem 1rem;
+}
+.product-name {
+  font-family: var(--jj-font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.product:hover .product-name { color: var(--jj-accent); }
+.product-price {
+  color: var(--jj-muted);
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin: 0;
+  white-space: nowrap;
+}
+.product:hover .product-price { color: var(--jj-text); }
+
+/* ---------- lookbook ---------- */
+
+.lookbook { background: var(--jj-surface); border-block: 2px solid var(--jj-text); }
+.lookbook-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+.look { margin: 0; border: 1px solid var(--jj-line); }
+.look-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-bottom: 1px solid var(--jj-line);
+}
+.look-media .ph {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.look:hover .ph { transform: scale(1.05); }
+.ph--look1 {
+  background:
+    repeating-linear-gradient(90deg, rgba(216, 255, 62, 0.06) 0 2px, transparent 2px 9px),
+    conic-gradient(from 140deg at 30% 65%, #101010 0deg, #3C3C3C 90deg, #D8FF3E 118deg, #1F2405 124deg, #181818 200deg, #101010 360deg);
+}
+.ph--look2 {
+  background:
+    repeating-linear-gradient(0deg, rgba(14, 14, 14, 0.5) 0 2px, transparent 2px 7px),
+    radial-gradient(90% 70% at 70% 25%, #4E4E4E, transparent 55%),
+    linear-gradient(210deg, #3A3A3A 0%, #191919 55%, #0E0E0E 100%);
+}
+.look figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+}
+.look-title {
+  font-family: var(--jj-font-heading);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+.look:hover .look-title { color: var(--jj-accent); }
+.look-note {
+  color: var(--jj-muted);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---------- newsletter ---------- */
+
+.newsletter {
+  background: var(--jj-accent);
+  color: var(--jj-ink);
+  border-bottom: 2px solid var(--jj-text);
+}
+.newsletter-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+}
+.newsletter h2 { font-size: clamp(2rem, 5.5vw, 3.9rem); }
+.newsletter p {
+  margin: 0.9rem 0 0;
+  font-weight: 500;
+  max-width: 44ch;
+}
+.newsletter form { display: flex; }
+.newsletter input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 2px solid var(--jj-ink);
+  border-right: 0;
+  border-radius: var(--jj-radius);
+  padding: 0.95rem 1.1rem;
+  font-weight: 500;
+  outline-offset: 3px;
+}
+.newsletter input::placeholder { color: rgba(14, 14, 14, 0.55); }
+.newsletter button {
+  background: var(--jj-ink);
+  color: var(--jj-accent);
+  border: 2px solid var(--jj-ink);
+  border-radius: var(--jj-radius);
+  padding: 0.95rem 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.newsletter button:hover, .newsletter button:focus-visible {
+  background: transparent;
+  color: var(--jj-ink);
+}
+
+/* ---------- footer ---------- */
+
+.site-footer { background: var(--jj-bg); }
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem);
+}
+.footer-col h3 {
+  font-family: var(--jj-font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--jj-accent);
+  margin-bottom: 1rem;
+}
+.footer-col ul { list-style: none; margin: 0; padding: 0; }
+.footer-col li + li { margin-top: 0.55rem; }
+.footer-col a, .footer-col p {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--jj-muted);
+  margin: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.footer-col a:hover { background: var(--jj-accent); color: var(--jj-ink); }
+.footer-giant {
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 0.8;
+  padding-bottom: 0.5rem;
+}
+.footer-giant span {
+  font-family: var(--jj-font-heading);
+  font-size: clamp(2.2rem, 10.2vw, 10rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--jj-line);
+}
+.footer-bottom {
+  border-top: 1px solid var(--jj-line);
+  padding-block: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--jj-muted);
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .hero h1 .stroke { color: var(--jj-accent); }
+  .footer-giant span { color: var(--jj-line); }
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product { border-top: 1px solid var(--jj-line); }
+  .products { border-top: 0; }
+  .hero-slab { inset: 0 0 0 0; opacity: 0.85; }
+  .newsletter-inner { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .main-nav { display: none; }
+  .menu-btn { display: block; }
+  .cart-text { display: none; }
+  .lookbook-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .newsletter form { flex-direction: column; gap: 0.6rem; }
+  .newsletter input { border-right: 2px solid var(--jj-ink); }
+}
+</style>
+</head>
+<body>
+
+<div class="announce" role="region" aria-label="Announcement">
+  Free worldwide shipping over $150 — no restocks, ever
+</div>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="logo" href="#">Jehovah Jireh<sup>®</sup></a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#">Shop</a>
+      <a href="#">Lookbook</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="header-tools">
+      <a class="cart-link" href="#" aria-label="Cart, 0 items">
+        <svg width="15" height="17" viewBox="0 0 16 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M1.5 5.5h13l-1 11h-11l-1-11Z"/>
+          <path d="M5 5.5V4a3 3 0 0 1 6 0v1.5"/>
+        </svg>
+        <span class="cart-text">Cart [0]</span>
+      </a>
+      <button class="menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-slab" role="img" aria-label="High-contrast campaign image placeholder"></div>
+    <div class="hero-meta">
+      <span class="tag">FW26</span>
+      <span class="tag tag--ghost">Drop 01</span>
+    </div>
+    <div class="hero-inner">
+      <h1>LOUD BY <span class="stroke">DESIGN.</span></h1>
+      <div class="hero-sub">
+        <p>Heavyweight cuts. Zero apologies. One drop, then it's gone —
+          streetwear built for volume, worn at full blast.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#">Shop the drop</a>
+          <a class="btn btn--ghost" href="#">Lookbook</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <span>New drop FW26</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Loud by design</span><span class="x">✕</span>
+        <span>No restocks</span><span class="x">✕</span>
+        <span>New drop FW26</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Loud by design</span><span class="x">✕</span>
+        <span>No restocks</span><span class="x">✕</span>
+      </div>
+      <div class="marquee-group">
+        <span>New drop FW26</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Loud by design</span><span class="x">✕</span>
+        <span>No restocks</span><span class="x">✕</span>
+        <span>New drop FW26</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Loud by design</span><span class="x">✕</span>
+        <span>No restocks</span><span class="x">✕</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- new arrivals -->
+  <section class="section wrap" aria-labelledby="arrivals-title">
+    <div class="section-head">
+      <h2 id="arrivals-title">New <span class="accent">arrivals</span></h2>
+      <a class="head-link" href="#">View all</a>
+    </div>
+    <div class="products">
+      <article class="product">
+        <a href="#" aria-label="Oversized Wool Coat, $189">
+          <div class="product-media"><span class="tag">01</span><div class="ph ph--coat"></div></div>
+          <div class="product-info">
+            <h3 class="product-name">Oversized Wool Coat</h3>
+            <p class="product-price">$189</p>
+          </div>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Relaxed Linen Shirt, $79">
+          <div class="product-media"><span class="tag">02</span><div class="ph ph--linen"></div></div>
+          <div class="product-info">
+            <h3 class="product-name">Relaxed Linen Shirt</h3>
+            <p class="product-price">$79</p>
+          </div>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Wide-Leg Trouser, $95">
+          <div class="product-media"><span class="tag">03</span><div class="ph ph--trouser"></div></div>
+          <div class="product-info">
+            <h3 class="product-name">Wide-Leg Trouser</h3>
+            <p class="product-price">$95</p>
+          </div>
+        </a>
+      </article>
+      <article class="product">
+        <a href="#" aria-label="Knit Longline Cardigan, $120">
+          <div class="product-media"><span class="tag">04</span><div class="ph ph--cardigan"></div></div>
+          <div class="product-info">
+            <h3 class="product-name">Knit Longline Cardigan</h3>
+            <p class="product-price">$120</p>
+          </div>
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- lookbook -->
+  <section class="section lookbook" aria-labelledby="lookbook-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="lookbook-title">The <span class="accent">lookbook</span></h2>
+        <a class="head-link" href="#">All looks</a>
+      </div>
+      <div class="lookbook-grid">
+        <figure class="look">
+          <div class="look-media"><div class="ph ph--look1"></div></div>
+          <figcaption>
+            <span class="look-title">Static / 01</span>
+            <span class="look-note">Concrete garden</span>
+          </figcaption>
+        </figure>
+        <figure class="look">
+          <div class="look-media"><div class="ph ph--look2"></div></div>
+          <figcaption>
+            <span class="look-title">Static / 02</span>
+            <span class="look-note">After hours</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- newsletter -->
+  <section class="section wrap newsletter" aria-labelledby="newsletter-title">
+    <div class="newsletter-inner">
+      <div>
+        <h2 id="newsletter-title">Don't miss the drop</h2>
+        <p>One alert per release. First access, no spam, unsubscribe whenever.</p>
+      </div>
+      <form action="#" method="post">
+        <label for="nl-email" class="visually-hidden">Email address</label>
+        <input id="nl-email" type="email" name="email" placeholder="YOUR@EMAIL.COM" required>
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- closing marquee -->
+  <div class="marquee marquee--invert" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <span>Drops every 6 weeks</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Worn at full blast</span><span class="x">✕</span>
+        <span>FW26</span><span class="x">✕</span>
+        <span>Drops every 6 weeks</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Worn at full blast</span><span class="x">✕</span>
+        <span>FW26</span><span class="x">✕</span>
+      </div>
+      <div class="marquee-group">
+        <span>Drops every 6 weeks</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Worn at full blast</span><span class="x">✕</span>
+        <span>FW26</span><span class="x">✕</span>
+        <span>Drops every 6 weeks</span><span class="x">✕</span>
+        <span>Jehovah Jireh</span><span class="x">✕</span>
+        <span>Worn at full blast</span><span class="x">✕</span>
+        <span>FW26</span><span class="x">✕</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Menu</h3>
+        <ul>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">Lookbook</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Drop archive</a></li>
+          <li><a href="#">Sizing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:noise@jehovahjireh.example">noise@jehovahjireh.example</a></li>
+          <li><p>Unit 9, Blackline Industrial Park</p></li>
+          <li><p>Drops every 6 weeks</p></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Social</h3>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Discord</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-giant" aria-hidden="true"><span>Jehovah Jireh</span></div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Jehovah Jireh</span>
+    <span>Loud by design</span>
+  </div>
+</footer>
+
+</body>
+</html>
