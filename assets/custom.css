@@ -811,3 +811,222 @@ button.shopify-payment-button__button--unbranded {
   text-transform: uppercase;
   letter-spacing: -0.01em;
 }
+
+/* 7. Cart drawer */
+
+/* ---- load-order note ----
+   config/settings_data.json's cart_type flip ("notification" -> "drawer",
+   this task) activates layout/theme.liquid:285-291's <head> block:
+   component-cart-drawer.css, component-cart.css, component-totals.css,
+   component-price.css, component-discounts.css — all <link>-tagged AFTER
+   custom.css's own <head> <link> (theme.liquid:282), so ties on these
+   files go to Dawn (later stylesheet), same rule as sections 3-6.
+   component-cart-items.css loads unconditionally right after custom.css
+   too (theme.liquid:283, media="print" preload-swap trick — still lands
+   after custom.css in the cascade once swapped to media="all"). Two more
+   files are body-injected by snippets/cart-drawer.liquid itself
+   (quantity-popover.css, component-card.css) — also after custom.css.
+   Net effect: every file this drawer's markup touches loads after
+   custom.css, so every same-specificity match here is a real tie Dawn
+   wins — genuine chaining/boosts are used below wherever Dawn actually
+   sets the same property on the same selector text; ties are called out
+   explicitly, free wins (Dawn not setting the property at all) are noted
+   as such rather than padded with unnecessary specificity. */
+
+/* ---- overlay scrim ----
+   <cart-drawer class="drawer ..."> IS the full-viewport backdrop element
+   (snippets/cart-drawer.liquid); component-cart-drawer.css's `.drawer`
+   rule sets `background-color: rgba(var(--color-foreground), 0.5)` (0,1,0).
+   For this theme --color-foreground is light (242,242,242, scheme-1 =
+   --jj-text) since text-on-dark is inverted from Dawn's light-theme
+   default assumption, so Dawn's own rule paints a hazy light-gray veil
+   over a dark site — a real, visible mismatch with the "loud, dark
+   streetwear" language (not a contrast bug, a tone/mood one). Fixed with
+   a dark scrim keyed to --jj-bg instead. `cart-drawer.drawer` (element +
+   class, 0,1,1) beats Dawn's 0,1,0 outright, order-independent — and the
+   tag-name selector keeps this scoped to only the cart drawer's own
+   <cart-drawer> element, not other Dawn drawers (header/facets) that
+   reuse the plain `.drawer` class on a different tag. Explicit judgment
+   call, not a named brief requirement — flagged in the task report. */
+cart-drawer.drawer {
+  background-color: color-mix(in srgb, var(--jj-bg) 70%, transparent);
+}
+
+/* ---- panel background ----
+   `.drawer__inner` itself sets no background (component-cart-drawer.css
+   only sets layout/border props on it) — the panel's dark fill actually
+   comes from Dawn's own `.gradient` class (also on this element, base.css
+   line ~2949: `background: var(--gradient-background)`, 0,1,0), which for
+   cart_color_scheme "scheme-1" already resolves to --jj-bg exactly
+   (config/settings_data.json scheme-1.background = #0E0E0E = --jj-bg,
+   established in Task 3). base.css loads BEFORE custom.css, so an
+   unscoped `.drawer__inner{background}` here is a genuine same-
+   specificity (0,1,0 vs 0,1,0) tie resolved by source order in custom.
+   css's favor — a real win, not a coincidence (the property is actually
+   won on the cascade, it just happens to repaint the same color Dawn's
+   losing declaration would have). Set explicitly per this project's
+   belt-and-suspenders convention so the drawer stays correct even if
+   cart_color_scheme's background setting ever drifts from --jj-bg. */
+.drawer__inner {
+  background: var(--jj-bg);
+}
+
+/* ---- heading ----
+   component-cart-drawer.css's `.drawer__heading{margin}` never sets
+   text-transform/letter-spacing/color/font-family — free win, no chaining
+   needed. Font-family is already Archivo Black via section 2's global
+   h1..h6 rule (`.drawer__heading` is a real <h2>); color already resolves
+   to --jj-text via base.css's own h1..h6 rule — neither duplicated here. */
+.drawer__heading {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* ---- close button ----
+   No Dawn file sets a :hover/:focus-visible color for `.drawer__close`
+   (checked component-cart-drawer.css in full) — free win. Only `color` is
+   touched; `outline`/`box-shadow` are left untouched so base.css's global
+   `*:focus-visible` ring (theme's only focus-visibility mechanism) still
+   applies unmodified when the drawer traps focus on this button. */
+.drawer__close:hover,
+.drawer__close:focus-visible {
+  color: var(--jj-accent);
+}
+
+/* ---- item name ----
+   component-cart-items.css's `.cart-item__name{text-decoration;display}`
+   and its `:hover{text-decoration;text-underline-offset;...}` never touch
+   text-transform/letter-spacing/color — free wins on all three below (no
+   tie, Dawn doesn't set the property at all on this selector). Rest-state
+   color/font already correct via base.css's own `.h4` utility class
+   (`.cart-item__name` carries `h4`, matching Task 7's `.product__title h1`
+   precedent), not duplicated here. */
+.cart-item__name {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.cart-item__name:hover {
+  color: var(--jj-accent);
+}
+
+/* ---- item price ----
+   snippets/cart-drawer.liquid renders `.cart-item__old-price` /
+   `.cart-item__final-price` TWICE per discounted line, with two DIFFERENT
+   companion classes depending on which column: the details column (next
+   to the title) uses `product-option` (`<s class="cart-item__old-price
+   product-option">`, `<strong class="cart-item__final-price product-
+   option">`); the totals column uses `price price--end` on the old price
+   only (`<s class="cart-item__old-price price price--end">`) — its
+   "final" price there is a PLAIN `<span class="price price--end">` with
+   no `.cart-item__final-price` class at all. Both companions are chained
+   below so neither column is missed.
+   `.cart-item__final-price{font-weight: 400}` (component-cart-items.css,
+   0,1,0) actually forces the `<strong>` tag DOWN from the browser's UA-
+   stylesheet bold default to 400 (any author rule, any specificity, beats
+   a UA-stylesheet default) — chaining `.product-option` (0,2,0) restores
+   700, beating Dawn's rule outright rather than assuming the tag's native
+   bold survives (it doesn't). `.cart-item__old-price{opacity:0.7}`
+   (component-cart-items.css, 0,1,0) sets no color, so `.product-option`
+   is a free win there; the `.price` chain on the *old*-price is a real
+   fight, not a free one — component-price.css's own `.price{color: rgb(
+   var(--color-foreground))}` (0,1,0) DOES compete on color, a tie this
+   drawer would otherwise lose (component-price.css loads after custom.
+   css when cart_type is "drawer") — `.cart-item__old-price.price` (0,2,0)
+   wins it outright. */
+.cart-item__old-price.price,
+.cart-item__old-price.product-option {
+  color: var(--jj-muted);
+}
+.cart-item__final-price.product-option {
+  font-weight: 700;
+}
+
+/* ---- quantity stepper ----
+   `.quantity`/`.quantity__input`/`.quantity__button` are already styled
+   globally in section 6 (border-radius: var(--jj-radius); text/muted/
+   accent-on-hover colors) — those selectors are unscoped on purpose
+   (base.css-only, no PDP-specific ancestor), so the exact same rules
+   already apply to this drawer's `<quantity-input class="quantity cart-
+   quantity">` without duplication. Verified live in Step 3 below; nothing
+   added here per "keep each rule in exactly one place" (Task 6 convention). */
+
+/* ---- remove-item button ----
+   Real bug, not a duplicate of the sitewide `.button--secondary` contrast
+   bug queued for Task 9 (that one is `--secondary`; this button carries
+   `--tertiary`) but the same root cause: section 2's blanket `.button,
+   ...{background: var(--jj-accent)}` (0,1,0) also matches this button
+   (`class="button button--tertiary cart-remove-button"`), painting an
+   opaque lime square over what Dawn intends as a borderless icon button
+   (`.button--tertiary{--alpha-button-background: 0}`, base.css — inert
+   once a hardcoded `background` shorthand wins the property outright).
+   Fixed in-scope since the affected button lives inside this task's own
+   drawer markup. `.cart-remove-button{background}` is 0,1,0 — an EXACT
+   tie against section 2's `.button{background}`, but both rules live in
+   this same file (custom.css) and section 7 is physically later than
+   section 2, so it wins on ordinary same-file cascade order (not a fight
+   against a separate Dawn stylesheet this time). `color` follows the
+   established `.quantity__button` pattern (section 6): base.css's
+   `.button{color: rgb(var(--color-button-text))}` (0,1,0) loads before
+   custom.css, so the same-specificity tie already resolves to custom.css
+   by file order, no chaining needed for the rest state. The `:hover` case
+   is different — component-cart-items.css's own hover rule,
+   `cart-remove-button .button:not([disabled]):hover{color}`, is (0,3,1)
+   (type + class + :not([disabled]) + :hover), which would beat an
+   unscoped `.cart-remove-button:hover` (0,1,1) outright regardless of
+   file order. Chained with the button's two other real classes
+   (`.button.button--tertiary`, both present in the markup) for a (0,4,1)
+   win. */
+.cart-remove-button {
+  background: transparent;
+  color: var(--jj-muted);
+}
+.button.button--tertiary.cart-remove-button:hover {
+  color: var(--jj-accent);
+}
+
+/* ---- checkout CTA ----
+   `.cart__ctas .button` (this task's named hook) already renders dark-
+   on-acid without any fix needed: section 2's global `.button{background:
+   var(--jj-accent)}` supplies the lime fill, and cart_color_scheme is
+   "scheme-1" (config/settings_data.json), whose `button_label` (#0E0E0E,
+   dark) becomes `--color-button-text` on the `.color-scheme-1` class that
+   wraps this button (`.drawer__inner.color-scheme-1` is a real ancestor
+   of `.cart__ctas`) — confirmed live via computed style in Step 3, not
+   assumed. Also confirmed `.cart__checkout-button` carries no
+   `button--secondary` class (checked snippets/cart-drawer.liquid), so it
+   cannot repeat the sitewide light-on-lime bug queued for Task 9. Full-
+   width is likewise already Dawn's own behavior (component-cart.css's
+   `.cart__ctas button{width:100%}` combined with component-cart-drawer.
+   css's `.cart-drawer .cart__checkout-button{max-width:none}`, which
+   strips the 36rem cap component-cart.css sets elsewhere) — not
+   duplicated here. Only typography is added: base.css's own
+   `.button{letter-spacing: 0.1rem}` (0,1,0, before custom.css) would
+   already lose this tie to an unscoped rule by file order alone, and
+   `.cart__ctas .button` (0,2,0) wins it outright too — belt and
+   suspenders, consistent with this file's established convention.
+   text-transform/font-weight are free wins (Dawn sets neither here). */
+.cart__ctas .button {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- empty state ----
+   `.cart__empty-text` is a real <h2> (Archivo Black + --jj-text already
+   via section 2/base.css's h1..h6 rules, not duplicated) with no Dawn
+   text-transform set anywhere — free win. The "Continue shopping" link
+   (`.cart-drawer__empty-content .button`, real ancestor + class, 0,2,0)
+   is a sibling of `.cart__ctas .button` sharing the same dark-on-acid
+   correctness (same `.color-scheme-1` ancestor chain, confirmed in Step
+   3) — only typography is added here, matching the checkout CTA's
+   treatment for visual consistency between the drawer's two possible
+   primary actions. */
+.cart__empty-text {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.cart-drawer__empty-content .button {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
