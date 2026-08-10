@@ -31,6 +31,32 @@ button.shopify-payment-button__button--unbranded {
   background: var(--jj-accent);
   border-radius: var(--jj-radius);
 }
+/* Task 9 QA fix: sitewide `.button--secondary` contrast bug. base.css's own
+   `.button--secondary{ --color-button-text: var(--color-secondary-button-
+   text) }` (line ~1192) reassigns the text-color variable to scheme-1's
+   secondary_button_label (#F2F2F2, light — config/settings_data.json);
+   combined with the accent (lime) BACKGROUND from the unscoped `.button`
+   rule directly above, that leaves light text on a lime button on every
+   `--secondary`-styled button sitewide that doesn't already carry its own
+   fix (featured-collection's "View all" when rendered as a button,
+   image-banner/rich-text/image-with-text/slideshow CTAs, cart-notification,
+   quick-add, gift-card, quick-order-list) — a general-case sibling of the
+   two already-fixed specific instances: `.product-form__submit` (Task 7,
+   PDP add-to-cart, carries --secondary because dynamic checkout is on) and
+   `.cart-remove-button` (Task 8, cart drawer, carries --tertiary, a
+   different variant of the same root cause). base.css's own `.button{color:
+   rgb(var(--color-button-text))}` (0,1,0) already loses any same-
+   specificity tie to custom.css by source order alone (base.css loads
+   before custom.css in <head>) — `.button--secondary{color}` below is the
+   same specificity (0,1,0) and wins the same way, forcing dark text back on
+   every secondary button regardless of scheme. Verified: no other loaded
+   stylesheet sets `.button--secondary`'s `color` (section-image-banner.css's
+   two `.button--secondary` rules only touch `--alpha-button-background`,
+   not color), so this plain, unscoped selector is a genuine sitewide win,
+   not a coincidence. */
+.button--secondary {
+  color: var(--jj-bg);
+}
 
 /* 3. Header / footer */
 
@@ -54,6 +80,31 @@ button.shopify-payment-button__button--unbranded {
 .announcement-bar__link:hover .announcement-bar__message {
   color: var(--jj-bg);
   text-decoration: underline;
+}
+/* Task 9 QA fix: announcement-bar link was missing :focus-visible styling
+   (header nav/icons already have it via section 3's `.header__menu-item`/
+   `.header__icon` rules below). Two problems, both fixed here: (1) keyboard
+   users got no hover-equivalent affordance on Tab; (2) the element's real
+   markup (sections/announcement-bar.liquid) carries Dawn's own
+   `.focus-inset` class, whose `.focus-inset:focus-visible{outline: 0.2rem
+   solid rgba(var(--color-foreground), 0.5)}` (base.css, 0,2,0) resolves to
+   a LIGHT ring (scheme-1 foreground #F2F2F2 @ 50%) against this section's
+   lime background (`.utility-bar{background: var(--jj-accent)}` above) —
+   low-contrast, hard to see. `.announcement-bar__link:focus-visible`
+   (0,2,0: one class + one pseudo-class) is a genuine same-specificity tie
+   against `.focus-inset:focus-visible`, resolved by source order (base.css
+   loads before custom.css) — a real win on the `outline-color` property
+   specifically (Dawn's rule only sets it via the `outline` shorthand; mine
+   sets the longhand, which wins the same cascade tie for that property).
+   Outline recolored to --jj-bg (same dark tone already used for this
+   section's resting/hover text) for real contrast against the lime bg;
+   outline-offset/width/box-shadow are left untouched. */
+.announcement-bar__link:focus-visible .announcement-bar__message {
+  color: var(--jj-bg);
+  text-decoration: underline;
+}
+.announcement-bar__link:focus-visible {
+  outline-color: var(--jj-bg);
 }
 
 /* ---- header (desktop) ---- */
