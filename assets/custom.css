@@ -233,8 +233,10 @@ button.shopify-payment-button__button--unbranded {
    Both new sections (custom-hero, lookbook) have no Dawn stylesheet
    competing for their own classes, so plain single-class selectors are
    enough there. The one exception below is the "new arrivals" product
-   grid, which reuses Dawn's shared card-product component — see the note
-   above that block for why it needs the id-scoping/specificity approach. */
+   grid, which reuses Dawn's shared card-product component — it no longer
+   needs the id-scoping/specificity approach; it now inherits section 5's
+   global card rules automatically — see the note further below for that
+   history. */
 .custom-hero {
   position: relative;
   overflow: hidden;
