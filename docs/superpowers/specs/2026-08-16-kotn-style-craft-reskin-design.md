@@ -150,7 +150,7 @@ The project is done when:
 
 ## 10. Constraints and carried-over lessons
 
-- Storefront password (`aucles`) passed via `--store-password`, never committed.
+- Storefront password: literal value kept in the local (git-excluded) SDD ledger, passed via `--store-password`, never committed.
 - `.superpowers/` stays git-excluded (`.git/info/exclude`).
 - On this Windows machine, stopping a background `shopify theme dev` shell does
   not kill the node process — find the PID and force-stop it.

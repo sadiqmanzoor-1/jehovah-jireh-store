@@ -21,7 +21,7 @@
 - The finished theme shows **no placeholder imagery and no lorem text anywhere** (user directive).
 - Push only **unpublished** themes; theme name "Jehovah Jireh Store". Publishing is the user's manual decision — never run `shopify theme publish`.
 - `shopify theme check` before each commit: no NEW offenses vs. the Task 1 baseline. Commit at the end of every task.
-- Storefront password is `aucles` — pass via `--store-password` only; never commit it. The Admin API token lives in the `SHOPIFY_ADMIN_TOKEN` env var only; never commit it.
+- Storefront password: the literal value lives ONLY in the local SDD ledger (git-excluded) — pass via `--store-password` only; never commit it. The Admin API token lives in the `SHOPIFY_ADMIN_TOKEN` env var only; never commit it.
 - Windows quirk: stopping a background `shopify theme dev` shell does NOT kill the node process — find the PID (`netstat -ano | findstr 9292`) and force-stop it.
 - SDD ledger: `.superpowers/sdd/2026-08-16-kotn-craft-reskin/` (git-excluded via `.git/info/exclude`).
 - Two USER GATES: mockup fidelity (after Task 3) and the final report (after Task 11, publish reminder only). One USER ACTION each in Task 1 (install Craft) and Task 4 (create API token).
@@ -59,7 +59,7 @@ d:\Claude\shopify-store\            (branch craft-reskin)
 
 **Interfaces:**
 - Consumes: nothing (first task).
-- Produces: local Craft copy served by `shopify theme dev -e dev --store-password aucles` at `http://127.0.0.1:9292`; theme-check baseline offense count recorded in the commit message; Craft version + confirmed section inventory recorded in the ledger.
+- Produces: local Craft copy served by `shopify theme dev -e dev --store-password <ledger>` at `http://127.0.0.1:9292`; theme-check baseline offense count recorded in the commit message; Craft version + confirmed section inventory recorded in the ledger.
 
 - [ ] **Step 1: Recreate store config and .gitignore**
 
@@ -103,7 +103,7 @@ Expected: completes; record the offense count — this is the baseline every lat
 
 - [ ] **Step 7: Smoke-test the dev server**
 
-Run in background: `shopify theme dev -e dev --store-password aucles`
+Run in background: `shopify theme dev -e dev --store-password <ledger>`
 Then: `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:9292`
 Expected: `200`. Stop the server (kill the PID; see Global Constraints).
 
@@ -368,7 +368,7 @@ console.log("page: our-story");
 Run (PowerShell): `$env:SHOPIFY_ADMIN_TOKEN = "<token from user>"; node scripts/create-catalog.mjs`
 Expected: 12 `product:` lines, 4 `collection:` lines, `page: our-story`, no thrown errors. If a mutation fails on a field name (API version drift), check the current schema at shopify.dev/docs/api/admin-graphql and adjust — record the change in the ledger.
 
-- [ ] **Step 4: Verify on the storefront** — start `shopify theme dev -e dev --store-password aucles`; check `http://127.0.0.1:9292/collections/jackets` shows 4 products with photos; `/products/the-oxford-shirt` shows price $68 and sizes S–XL; `/pages/our-story` renders. Stop the server.
+- [ ] **Step 4: Verify on the storefront** — start `shopify theme dev -e dev --store-password <ledger>`; check `http://127.0.0.1:9292/collections/jackets` shows 4 products with photos; `/products/the-oxford-shirt` shows price $68 and sizes S–XL; `/pages/our-story` renders. Stop the server.
 
 - [ ] **Step 5: Commit + advise token cleanup**
 
@@ -685,7 +685,7 @@ Expected: CLI prints editor + preview URLs. Save both. (This creates a NEW libra
 Run: `npx lighthouse http://127.0.0.1:9292 --preset=desktop --quiet --output=json --output-path=lighthouse-home.json` (dev server running).
 Read `categories.performance.score` ≥ 0.80 and `categories.accessibility.score` ≥ 0.95. If below, fix the top flagged items (usually unsized images — add width/height/aspect-ratio in `custom.css` — or oversized hero asset) and re-run once.
 
-- [ ] **Step 7: TEST ORDER** — on the preview URL (enter password `aucles`): add The Oxford Shirt (size M) → checkout → Bogus Gateway: card number `1`, any name/expiry/CVV → order completes. Record the order number from the confirmation page. This closes the goal that stayed pending in the previous project.
+- [ ] **Step 7: TEST ORDER** — on the preview URL (enter the storefront password from the ledger): add The Oxford Shirt (size M) → checkout → Bogus Gateway: card number `1`, any name/expiry/CVV → order completes. Record the order number from the confirmation page. This closes the goal that stayed pending in the previous project.
 
 - [ ] **Step 8: Commit + final report**
 
